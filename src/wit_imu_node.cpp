@@ -126,23 +126,26 @@ int main(int argc, char **argv)
             imu_data.orientation.z = imu.quat.z;
             imu_data.orientation.w = imu.quat.w;
             imu_data.orientation_covariance = {1e-6, 0, 0, 0, 1e-6, 0, 0, 0, 1e-6};
+            if(true == imu.updated){
+                imu.updated = false;
+                imu_pub.publish(imu_data);
 
-            imu_pub.publish(imu_data);
+                if (pub_mag)
+                {
+                    sensor_msgs::MagneticField mag_data;
 
-            if (pub_mag)
-            {
-                sensor_msgs::MagneticField mag_data;
+                    mag_data.header.stamp = imu_data.header.stamp;
+                    mag_data.header.frame_id = imu_data.header.frame_id;
 
-                mag_data.header.stamp = imu_data.header.stamp;
-                mag_data.header.frame_id = imu_data.header.frame_id;
+                    mag_data.magnetic_field.x = imu.mag.x;
+                    mag_data.magnetic_field.y = imu.mag.y;
+                    mag_data.magnetic_field.z = imu.mag.z;
+                    mag_data.magnetic_field_covariance = {1e-6, 0, 0, 0, 1e-6, 0, 0, 0, 1e-6};
 
-                mag_data.magnetic_field.x = imu.mag.x;
-                mag_data.magnetic_field.y = imu.mag.y;
-                mag_data.magnetic_field.z = imu.mag.z;
-                mag_data.magnetic_field_covariance = {1e-6, 0, 0, 0, 1e-6, 0, 0, 0, 1e-6};
-
-                mag_pub.publish(mag_data);
+                    mag_pub.publish(mag_data);
+                }
             }
+
         }
 
         //处理ROS的信息，比如订阅消息,并调用回调函数

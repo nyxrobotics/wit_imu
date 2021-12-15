@@ -46,6 +46,7 @@ void CJY901::FetchData(char *data, int usLength)
 			acc.z = stcAcc.a[2] / 32768.00 * 16 * 9.8;
 			break;
 		case 0x52:
+		    updated = true;
 			memcpy(&stcGyro, &pData_head[2], 8);
 			gyro.x = stcGyro.w[0] / 32768.00 * 2000 / 180 * 3.1415926;
 			gyro.y = stcGyro.w[1] / 32768.00 * 2000 / 180 * 3.1415926;

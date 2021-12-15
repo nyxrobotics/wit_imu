@@ -7,7 +7,7 @@
     <node pkg="wit_imu" type="wit_imu_node" name="imu_node" output="screen">
         <param name="port" value="ttyUSB0"/>
         <param name="baudrate" value="921600"/>
-        <param name="publish_rate" value="50"/>
+        <param name="publish_rate" value="1000"/>
         <param name="publish_mag" value="true"/>
         <param name="imu_topic" value="imu_data"/>
         <param name="mag_topic" value="mag_data"/>

@@ -196,6 +196,7 @@ public:
 
 	CJY901();
 	void FetchData(char *data, int usLength);
+	bool updated;
 
 private:
 	struct S_Time stcTime;
