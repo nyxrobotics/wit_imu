@@ -31,9 +31,9 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     ros::NodeHandle nh_private("~");
 
-    nh_private.param<std::string>("port", port, "ttyS0");
+    nh_private.param<std::string>("port", port, "ttyUSB0");
     port = "/dev/" + port;
-    nh_private.param<int>("baudrate", baudrate, 9600);
+    nh_private.param<int>("baudrate", baudrate, 921600);
     nh_private.param<int>("publish_rate", pub_rate, 20);
     nh_private.param<bool>("publish_mag", pub_mag, true);
     nh_private.param<std::string>("imu_topic", imu_topic, "imu_data");
@@ -49,8 +49,8 @@ int main(int argc, char **argv)
     ROS_INFO_STREAM("imu_frame : " << imu_frame);
 
     //发布主题
-    ros::Publisher imu_pub = nh.advertise<sensor_msgs::Imu>(imu_topic, 1000);
-    ros::Publisher mag_pub = nh.advertise<sensor_msgs::MagneticField>(mag_topic, 1000);
+    ros::Publisher imu_pub = nh.advertise<sensor_msgs::Imu>(imu_topic, 10);
+    ros::Publisher mag_pub = nh.advertise<sensor_msgs::MagneticField>(mag_topic, 10);
 
     CJY901 imu = CJY901();
     try

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ros/ros.h>
 #include "JY901.h"
 
 CJY901 ::CJY901()
@@ -10,13 +11,29 @@ CJY901 ::CJY901()
 void CJY901::FetchData(char *data, int usLength)
 {
 	char *pData_head = data;
-	while (usLength >= 11)
+	while (usLength > 10)
 	{
+		// Search header
 		if (pData_head[0] != 0x55)
 		{
 			pData_head++;
+			usLength--;
 			continue;
 		}
+		// Checksum
+        char checksum = 0;
+        for (size_t i = 0; i < 10; i++)
+        {
+            checksum += pData_head[i];
+        }
+        if( pData_head[10] != checksum)
+        {
+            //ROS_ERROR_STREAM("Checksum ERROR");
+			pData_head++;
+			usLength--;
+            return;
+        }
+        // Read data
 		switch (pData_head[1])
 		{
 		case 0x50:
